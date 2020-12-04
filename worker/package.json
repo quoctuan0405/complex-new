@@ -1,0 +1,22 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "tsc && node build/index.js",
+    "dev:build": "tsc -w",
+    "dev:run": "nodemon build/index.js",
+    "dev": "concurrently npm:dev:*"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^14.14.10",
+    "@types/redis": "^2.8.28",
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6",
+    "redis": "^3.0.2",
+    "typescript": "^4.1.2"
+  }
+}
