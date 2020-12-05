@@ -8,6 +8,16 @@ interface RedisValues {
     [key: number]: number
 }
 
+interface PostgresValues {
+    [key: string]: number
+    number: number
+}
+
+interface IndexPageProps {
+    indexes: PostgresValues[];
+    redisValues: RedisValues;
+}
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         background: theme.palette.primary.main,
@@ -28,15 +38,15 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-const IndexPage: NextPage = () => {
+const IndexPage: NextPage<IndexPageProps> = ({indexes, redisValues}) => {
     const classes = useStyles();
 
-    const [seenIndexes, setSeenIndexes] = useState<number[]>([1, 2, 3, 4]);
-    const [values, setValues] = useState<RedisValues>({1: 1, 2: 1, 3: 2});
+    const [seenIndexes, setSeenIndexes] = useState<PostgresValues[]>(indexes);
+    const [values, setValues] = useState<RedisValues>(redisValues);
     const [index, setIndex] = useState<string>("");
 
     const renderSeenIndexes = () => {
-        return seenIndexes.map((index) => index).join(', ')
+        return seenIndexes.map(({number: index}) => index).join(', ')
     }
 
     const renderValues = () => {
@@ -59,7 +69,7 @@ const IndexPage: NextPage = () => {
     const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        // await axios.post('/api/values', {index});
+        await axios.post('/api/values', {index});
 
         setIndex("");
     }
@@ -131,6 +141,14 @@ const IndexPage: NextPage = () => {
             </Grid>
         </Grid>
     )
+}
+
+IndexPage.getInitialProps = async () => {
+    const {data: indexes} = await axios.get<PostgresValues[]>(`http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/values/all`);
+    console.log(indexes);
+    const {data: redisValues} = await axios.get<RedisValues>(`http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/values/current`)
+
+    return {indexes, redisValues};
 }
 
 export default IndexPage;
