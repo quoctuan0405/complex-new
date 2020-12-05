@@ -60,7 +60,11 @@ app.post('/values', async (req, res) => {
     res.send({working: true});
 });
 
+app.get('/', (req, res) => {
+    res.send({hi: "there"});
+});
+
 app.listen(5000, () => {
-    console.log("Listening on port 5000...");
+    console.log("Listening on port 5000!!!");
 });
 
