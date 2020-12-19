@@ -144,9 +144,9 @@ const IndexPage: NextPage<IndexPageProps> = ({indexes, redisValues}) => {
 }
 
 IndexPage.getInitialProps = async () => {
-    const {data: indexes} = await axios.get<PostgresValues[]>(`http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/values/all`);
+    const {data: indexes} = await axios.get<PostgresValues[]>(`http://my-release-ingress-nginx-controller/api/values/all`);
     console.log(indexes);
-    const {data: redisValues} = await axios.get<RedisValues>(`http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/values/current`)
+    const {data: redisValues} = await axios.get<RedisValues>(`http://my-release-ingress-nginx-controller/api/values/current`)
 
     return {indexes, redisValues};
 }
