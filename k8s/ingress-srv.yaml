@@ -15,16 +15,6 @@ spec:
         - www.tuan-ticketing-app.xyz 
       secretName: tuan-ticketing-app-xyz
   rules:
-    - http:
-        paths:
-          - path: /?(.*)
-            backend:
-              serviceName: client-srv
-              servicePort: 3000
-          - path: /api/?(.*)
-            backend:
-              serviceName: server-srv
-              servicePort: 5000
     - host: tuan-ticketing-app.xyz
       http:
         paths:
@@ -38,6 +28,16 @@ spec:
               servicePort: 5000
     - host: www.tuan-ticketing-app.xyz
       http:
+        paths:
+          - path: /?(.*)
+            backend:
+              serviceName: client-srv
+              servicePort: 3000
+          - path: /api/?(.*)
+            backend:
+              serviceName: server-srv
+              servicePort: 5000
+    - http:
         paths:
           - path: /?(.*)
             backend:
